@@ -1,0 +1,45 @@
+<?php
+$this->headScript()->appendFile($this->assetUrl('vendor/sortablejs/Sortable.min.js', 'Omeka'));
+$value = '';
+$this->ckEditor();
+$textarea = new \Omeka\Form\Element\CkeditorInline('intro');
+$textarea->setOptions([
+    'label' => 'Intro', // @translate
+    'info' => 'HTML or plain text introduction', // @translate
+]);
+$textarea->setAttributes([
+    'rows' => 6,
+    'id' => 'custom-advanced-search-intro',
+    'value' => $intro,
+]);
+echo $this->formRow($textarea);
+
+$searchInputs = [
+    'resource-class' => $this->translate('Search by class'),
+    'properties' => $this->translate('Search by value'),
+    'site-pool' => $this->translate('In site pool'),
+    'item-sets' => $this->translate('Search by item set'),
+];
+$iterateInputs = array_keys(array_intersect_key($inputs, $searchInputs));
+?>
+<div id="custom-advanced-search-inputs">
+<?php
+foreach ($iterateInputs as $inputName):
+    $formName = 'form_inputs[' . $inputName . ']';
+?>
+    <div class="custom-advanced-search-input value row">
+        <span class="sortable-handle"></span>
+        <input type="text"
+            name="<?php echo $this->escapeHtml($formName); ?>"
+            placeholder="<?php echo $this->escapeHtml($searchInputs[$inputName]); ?>"
+            <?php if(isset($inputs[$inputName])) echo 'value="' . $this->escapeHtml($inputs[$inputName]) . '"'; ?>
+        >
+    </div>
+<?php endforeach; ?>
+</div>
+<script type="text/javascript">
+new Sortable(document.getElementById('custom-advanced-search-inputs'), {
+    draggable: '.custom-advanced-search-input',
+    handle: '.sortable-handle'
+});
+</script>

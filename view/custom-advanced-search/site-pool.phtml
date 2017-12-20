@@ -1,0 +1,24 @@
+<?php
+$customInputs = $this->setting('custom_advanced_search_inputs');
+$label = isset($customInputs['site-pool']) ? $customInputs['site-pool'] : false;
+if (!$label) {
+    $label = $this->translate('In site pool');
+}
+// Prepare the site query.
+if (isset($query['site_id'])) {
+    $siteId = $query['site_id'] ;
+} else {
+    $siteId = null;
+}
+?>
+<div class="field">
+    <div class="field-meta">
+        <label for="site_id"><?php echo $label; ?></label>
+    </div>
+    <div class="inputs">
+        <?php echo $this->siteSelect([
+            'name' => 'site_id',
+            'attributes' => ['id' => 'site_id', 'value' => $siteId]
+        ]); ?>
+    </div>
+</div>
